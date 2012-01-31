@@ -18,7 +18,7 @@ public class Run {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String dir = "/Users/tom/Research/Net_Align/yeast_paths_tfs_del/tfdel_paths_dir";
+		String dir = "/Users/tom/Research/HypergraphClust/yeast_paths_tfs_del/tfdel_paths_dir";
 		String file = "yeast_paths_tfdel_dir.txt";
 		boolean undirected = false; //true;
 		HyperGraph hg = new HyperGraph(dir, file, undirected);
