@@ -20,7 +20,21 @@ public class SCHype {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		
+		// set dummy parameter names
+		String hgfile = null;
+		String dir = null;
+		String p = null;
+		String q = null;
+		String outputfile = null;
+		String tolerance = null;
+		String maxstep = null;
+		String minclustsize = null;
+		String minclustscore = null;
+		String clusteredges = null;
+		
+		// set default parameters
+		
 	}
 
 }

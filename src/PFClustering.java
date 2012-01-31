@@ -558,9 +558,9 @@ public class PFClustering {
 	 * @param dir
 	 * @param file
 	 */
-	public void writeClusters(String dir, String file){
+	public void writeClusters(String file){
 		try {
-			File f = new File(dir, file);
+			File f = new File(file);
 			PrintWriter pw = new PrintWriter(f);
 			int ctr = 0;
 			for (Cluster cluster : this.clusters) {
@@ -592,9 +592,9 @@ public class PFClustering {
 	 * @param dir
 	 * @param file
 	 */
-	public void writeClusterEdges(String dir, String file){
+	public void writeClusterEdges(String file){
 		try {
-			File f = new File(dir, file);
+			File f = new File(file);
 			PrintWriter pw = new PrintWriter(f);
 			int ctr = 0;
 			for (Cluster cluster : this.clusters) {
@@ -631,9 +631,9 @@ public class PFClustering {
 		}
 	}
 	
-	public void writeScores(String dir, String file){
+	public void writeScores(String file){
 		try {
-			File f = new File(dir, file);
+			File f = new File(file);
 			PrintWriter pw = new PrintWriter(f);
 			for (Cluster cl : this.clusters){
 				pw.println(cl.score + "\t" + cl.scoreBound);

@@ -18,18 +18,17 @@ public class Run {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String dir = "/Users/tom/Research/HypergraphClust/yeast_paths_tfs_del/tfdel_paths_dir";
-		String file = "yeast_paths_tfdel_dir.txt";
+		String file = "/Users/tom/Research/HypergraphClust/yeast_paths_tfs_del/tfdel_paths_dir/yeast_paths_tfdel_dir.txt";
 		boolean undirected = false; //true;
-		HyperGraph hg = new HyperGraph(dir, file, undirected);
+		HyperGraph hg = new HyperGraph(file, undirected);
 		PFClustering clust = new PFClustering(hg, 1.0, 1.0);
 //		PFClustering clust = new PFClustering(hg, 1.0);
 //		clust.pfClustering();
 		clust.recursivePfClustering();
 		clust.postProcessing();
 //		clust.writeScores(dir, "Cross_tissue_lemone_hypergraph_scores.txt");
-		clust.writeClusters("test", "path_clusters.txt");
-		clust.writeClusterEdges("test", "path_clusters_edges.txt");
+		clust.writeClusters("path_clusters.txt");
+		clust.writeClusterEdges("path_clusters_edges.txt");
 //		for (int k=0; k<clust.clusters.size(); k++){
 //			writeVector(clust.clusters.get(k).perronVector, dir, "geom_graph_100_tri_vector_"+k+".txt");
 //		}

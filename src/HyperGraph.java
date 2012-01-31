@@ -51,20 +51,20 @@ public class HyperGraph {
 		this.setEdgeNodes();
 	}
 	
-	public HyperGraph(String dir, String file, boolean undirected){
+	public HyperGraph(String file, boolean undirected){
 		if (undirected)
-			this.readHyperGraphUndirected(dir, file);
+			this.readHyperGraphUndirected(file);
 		else
-			this.readHyperGraphDirected(dir, file);
+			this.readHyperGraphDirected(file);
 	}
 	
 	/**
 	 * Read undirected hypergraph from file
 	 */
-	public void readHyperGraphUndirected (String dir, String file) {
+	public void readHyperGraphUndirected (String file) {
 		this.edges = new HashSet<Edge>();
 		try {
-			Scanner fileScanner = new Scanner(new File(dir, file)).useDelimiter("\\n");
+			Scanner fileScanner = new Scanner(new File(file)).useDelimiter("\\n");
 			// walk through file, skip comment lines (starting with #)
 			ArrayList<String> edge;
 			String node;			
@@ -110,10 +110,10 @@ public class HyperGraph {
 	/**
 	 * Read undirected hypergraph from file
 	 */
-	public void readHyperGraphDirected (String dir, String file) {
+	public void readHyperGraphDirected (String file) {
 		this.edges = new HashSet<Edge>();
 		try {
-			Scanner fileScanner = new Scanner(new File(dir, file)).useDelimiter("\\n");
+			Scanner fileScanner = new Scanner(new File(file)).useDelimiter("\\n");
 			// walk through file, skip comment lines (starting with #)
 			HashSet<String> sourceVertices;
 			HashSet<String> targetVertices;
