@@ -83,7 +83,7 @@ public class Cluster {
 	public double clusterScore(double p){
 		for (Edge edge : this.edges)
 			score += edge.weight;
-		if (this.hyperGraph.undirected)
+		if (!this.hyperGraph.directed)
 			score = score/Math.pow((double)this.vertices.size(), 1.0/p);
 		else
 			score = score/Math.pow((double)this.sourceVertices.size()*(double)this.targetVertices.size(), 0.5/p);
@@ -93,7 +93,7 @@ public class Cluster {
 	public double clusterScore(double p, double q){	
 		for (Edge edge : this.edges)
 			score += edge.weight;
-		if (this.hyperGraph.undirected)
+		if (!this.hyperGraph.directed)
 			score = score/Math.pow((double)this.vertices.size(), 1.0/p);
 		else
 			score = score/(Math.pow((double)this.sourceVertices.size(), 0.5/p)*Math.pow((double)this.targetVertices.size(), 0.5/q));
@@ -105,14 +105,14 @@ public class Cluster {
 	 */
 	public void setNodes(){
 		this.vertices = new HashSet<String>();
-		if (!this.hyperGraph.undirected){
+		if (this.hyperGraph.directed){
 			this.sourceVertices = new HashSet<String>();
 			this.targetVertices = new HashSet<String>();
 		}
 		for (Edge edge : this.edges){
 			for (String node : edge.vertices)
 				this.vertices.add(node);
-			if (!this.hyperGraph.undirected){
+			if (this.hyperGraph.directed){
 				for (String node : edge.sourceVertices)
 					this.sourceVertices.add(node);
 				for (String node : edge.targetVertices)
@@ -127,7 +127,7 @@ public class Cluster {
 	public void setEdges(){
 		this.edges = new HashSet<Edge>();
 		HashSet<Edge> marked = new HashSet<Edge>();
-		if (this.hyperGraph.undirected){
+		if (!this.hyperGraph.directed){
 			for (Edge edge : this.hyperGraph.edges){
 				boolean isSubSet = edge.belongsTo(this.vertices);
 				if (isSubSet)
@@ -149,7 +149,7 @@ public class Cluster {
 	 * @return
 	 */
 	public HyperGraph toHyperGraph(){
-		HyperGraph hg = new HyperGraph(this.edges,this.hyperGraph.undirected);
+		HyperGraph hg = new HyperGraph(this.edges,this.hyperGraph.directed, this.hyperGraph.weighted);
 		System.out.println("Converted cluster to hypergraph with " + hg.vertices.size() + " vertices and " + hg.edges.size() + " edges.");
 		return hg;
 	}

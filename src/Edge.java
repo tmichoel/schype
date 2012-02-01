@@ -9,13 +9,11 @@ import java.util.*;
 
 public class Edge {
 	
-	public HashSet<String> vertices;
+	public ArrayList<String> vertices; // ArrayList ensures that we output nodes edges in same order as we get them
 	
-	public ArrayList<String> orderedVertices; // sometimes useful
+	public ArrayList<String> sourceVertices; // only used in directed hypergraphs
 	
-	public HashSet<String> sourceVertices; // only used in directed hypergraphs
-	
-	public HashSet<String> targetVertices; // only used in directed hypergraphs
+	public ArrayList<String> targetVertices; // only used in directed hypergraphs
 	
 	public double weight;
 	
@@ -27,7 +25,7 @@ public class Edge {
 	 * Undirected edge
 	 * @param vertices
 	 */
-	public Edge(HashSet<String> vertices){
+	public Edge(ArrayList<String> vertices){
 		this.vertices = vertices;
 		this.weight = 1.0;
 	}
@@ -37,44 +35,20 @@ public class Edge {
 	 * @param vertices
 	 * @param weight
 	 */
-	public  Edge(HashSet<String> vertices, double weight){
+	public  Edge(ArrayList<String> vertices, double weight){
 		this.vertices = vertices;
 		this.weight = weight;
 	}
-	
-	/**
-	 * Undirected edge
-	 * @param orderedVertices
-	 */
-	public Edge(ArrayList<String> orderedVertices){
-		this.orderedVertices = orderedVertices;
-		this.vertices = new HashSet<String>();
-		for (String node : this.orderedVertices)
-			this.vertices.add(node);
-		this.weight = 1.0;
-	}
-	
-	/**
-	 * Undirected edge
-	 * @param orderedVertices
-	 * @param weight
-	 */
-	public  Edge(ArrayList<String> orderedVertices, double weight){
-		this.orderedVertices = orderedVertices;
-		this.vertices = new HashSet<String>();
-		for (String node : this.orderedVertices)
-			this.vertices.add(node);
-		this.weight = weight;
-	}
+
 	
 	/**
 	 * Directed edge
 	 * @param vertices
 	 */
-	public Edge(HashSet<String> sourceVertices, HashSet<String> targetVertices){
+	public Edge(ArrayList<String> sourceVertices, ArrayList<String> targetVertices){
 		this.sourceVertices = sourceVertices;
 		this.targetVertices = targetVertices;
-		this.vertices = new HashSet<String>();
+		this.vertices = new ArrayList<String>();
 		for (String node : this.sourceVertices)
 			this.vertices.add(node);
 		for (String node : this.targetVertices)
@@ -86,10 +60,10 @@ public class Edge {
 	 * Directed edge
 	 * @param vertices
 	 */
-	public Edge(HashSet<String> sourceVertices, HashSet<String> targetVertices, double weight){
+	public Edge(ArrayList<String> sourceVertices, ArrayList<String> targetVertices, double weight){
 		this.sourceVertices = sourceVertices;
 		this.targetVertices = targetVertices;
-		this.vertices = new HashSet<String>();
+		this.vertices = new ArrayList<String>();
 		for (String node : this.sourceVertices)
 			this.vertices.add(node);
 		for (String node : this.targetVertices)
@@ -129,22 +103,25 @@ public class Edge {
 		return isSubSet;
 	}
 	
-	public String toString(){
+	public String toString(boolean withWeight){
 		String out = "";
-		for (String node : this.vertices)
-			out += node + " ";
+		for (int k=0; k<this.vertices.size(); k++)
+			out += this.vertices.get(k) + "\t";
+		if (withWeight)
+			out += ">\t" + String.valueOf(this.weight);
 		out.trim();
 		return out;
 	}
 	
-	public String toStringDirected(){
+	public String toStringDirected(boolean withWeight){
 		String out = "";
-		for (String node : this.sourceVertices)
-			out += node + " ";
-		out += "| ";
-		for (String node : this.targetVertices)
-			out += node + " ";
-		out += "> " + String.valueOf(this.weight);
+		for (int k=0; k<this.sourceVertices.size(); k++)
+			out += this.sourceVertices.get(k) + "\t";
+		out += "|\t";
+		for (int k=0; k<this.targetVertices.size(); k++)
+			out += this.targetVertices.get(k) + "\t";
+		if (withWeight)
+			out += ">\t" + String.valueOf(this.weight);
 		out.trim();
 		return out;
 	}

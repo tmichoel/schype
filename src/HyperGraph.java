@@ -19,7 +19,7 @@ public class HyperGraph {
 	
 	public HashSet<Edge> edges;
 	
-	public HashMap<String, HashSet<Edge>> nodeEdges; 
+	public HashMap<String, HashSet<Edge>> nodeEdges; // for each node, to which edges does it belong
 	
 	public HashMap<String, HashSet<Edge>> nodeSourceEdges; // only used for directed hypergraphs
 	
@@ -31,7 +31,9 @@ public class HyperGraph {
 	
 	public HashMap<String, Double> perronVectorY; // for directed hypergraphs
 	
-	public boolean undirected;
+	public boolean directed;
+	
+	public boolean weighted;
 	
 	/**
 	 * Empty constructor
@@ -44,15 +46,16 @@ public class HyperGraph {
 	/**
 	 * Create from list of edges
 	 */
-	public HyperGraph(HashSet<Edge> edges, boolean undirected){
+	public HyperGraph(HashSet<Edge> edges, boolean directed, boolean weighted){
 		this.edges = edges;
-		this.undirected = undirected;
+		this.directed = directed;
 		this.setNodes();
 		this.setEdgeNodes();
 	}
 	
-	public HyperGraph(String file, boolean undirected){
-		if (undirected)
+	public HyperGraph(String file, boolean directed, boolean weighted){
+		this.weighted = weighted;
+		if (!directed)
 			this.readHyperGraphUndirected(file);
 		else
 			this.readHyperGraphDirected(file);
@@ -86,7 +89,7 @@ public class HyperGraph {
 						node = node.trim();
 						if (!node.equals(">")) // separator between nodes and edge weight
 							edge.add(node);
-						else {
+						else if (this.weighted) {
 							node = line.next();
 							weight = Double.valueOf(node);
 						}
@@ -98,7 +101,7 @@ public class HyperGraph {
 					}
 				}
 			}
-			this.undirected = true;
+			this.directed = false;
 			this.setNodes();
 			this.setEdgeNodes();
 			System.out.println("Read undirected hypergraph with " + this.vertices.size() + " nodes and " + this.edges.size() + " edges.");
@@ -108,15 +111,15 @@ public class HyperGraph {
 	}
 	
 	/**
-	 * Read undirected hypergraph from file
+	 * Read directed hypergraph from file
 	 */
 	public void readHyperGraphDirected (String file) {
 		this.edges = new HashSet<Edge>();
 		try {
 			Scanner fileScanner = new Scanner(new File(file)).useDelimiter("\\n");
 			// walk through file, skip comment lines (starting with #)
-			HashSet<String> sourceVertices;
-			HashSet<String> targetVertices;
+			ArrayList<String> sourceVertices;
+			ArrayList<String> targetVertices;
 			String node;			
 			double weight;
 			while (fileScanner.hasNext()){
@@ -130,8 +133,8 @@ public class HyperGraph {
 				boolean source;
 				if (!node.startsWith("#")){
 					source = true;
-					sourceVertices = new HashSet<String>();
-					targetVertices = new HashSet<String>();
+					sourceVertices = new ArrayList<String>();
+					targetVertices = new ArrayList<String>();
 					sourceVertices.add(node);
 					//read other nodes
 					while (line.hasNext()){
@@ -147,7 +150,7 @@ public class HyperGraph {
 									targetVertices.add(node);
 								}
 							}
-						}else {
+						}else if (this.weighted){
 							node = line.next();
 							weight = Double.valueOf(node);
 						}
@@ -156,7 +159,7 @@ public class HyperGraph {
 					this.edges.add(e);
 				}
 			}
-			this.undirected = false;
+			this.directed = true;
 			this.setNodes();
 			this.setEdgeNodes();
 			System.out.println("Read directed hypergraph with " + this.vertices.size() + " nodes and " + this.edges.size() + " edges.");
@@ -183,7 +186,7 @@ public class HyperGraph {
 		this.nodeEdges = new HashMap<String, HashSet<Edge>>();
 		for (String node : vertices)
 			this.nodeEdges.put(node, new HashSet<Edge>());
-		if (!this.undirected){
+		if (this.directed){
 			this.nodeSourceEdges = new HashMap<String, HashSet<Edge>>();
 			this.nodeTargetEdges = new HashMap<String, HashSet<Edge>>();
 			for (String node : vertices){
@@ -195,7 +198,7 @@ public class HyperGraph {
 			for (String node : edge.vertices){
 				this.nodeEdges.get(node).add(edge);
 			}
-			if (!this.undirected){
+			if (this.directed){
 				for (String node : edge.sourceVertices)
 					this.nodeSourceEdges.get(node).add(edge);
 				for (String node : edge.targetVertices)
@@ -204,15 +207,6 @@ public class HyperGraph {
 		}
 	}
 	
-	/**
-	 * Set scale-free edge weights
-	 * @param base number between 0 and 1 
-	 */
-	public void setEdgeWeights(double base){
-		for (Edge edge : this.edges){
-			edge.weight = Math.pow(base, (double)edge.vertices.size());
-		}
-	}
 	
 	/**
 	 * Remove set of edges if all its elements belong to a cluster (undirected case)
@@ -572,12 +566,12 @@ public class HyperGraph {
 	 * Print edges
 	 */
 	public void printEdges(){
-		for (Edge edge : this.edges){
-			String line = "";
-			for (String node : edge.vertices)
-				line = line + "\t" + node;
-			System.out.println(line);
-		}
+		if (this.directed)
+			for (Edge edge : this.edges)
+				System.out.println(edge.toStringDirected(this.weighted));
+		else
+			for (Edge edge : this.edges)
+				System.out.println(edge.toString(this.weighted));
 	}
 	
 	/**

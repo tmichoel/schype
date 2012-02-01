@@ -149,10 +149,10 @@ public class PFClustering {
 	 */
 	public void pfClustering() {
 		this.clusters = new ArrayList<Cluster>();
-		if (this.hyperGraph.undirected){
+		if (!this.hyperGraph.directed){
 			HashMap<String,Double> v;
 			// make copy of hypergraph
-			HyperGraph hgCopy = new HyperGraph(this.hyperGraph.edges, true);
+			HyperGraph hgCopy = new HyperGraph(this.hyperGraph.edges, this.hyperGraph.directed, this.hyperGraph.weighted);
 			// clustering loop
 			System.out.println("Start Undirected Hypergraph Spectral Clustering algorithm ...");
 			while (!hgCopy.edges.isEmpty()){
@@ -171,7 +171,7 @@ public class PFClustering {
 		} else {
 			HashMap<String,Double> v, w;
 			// make copy of hypergraph
-			HyperGraph hgCopy = new HyperGraph(this.hyperGraph.edges, false);
+			HyperGraph hgCopy = new HyperGraph(this.hyperGraph.edges, this.hyperGraph.directed, this.hyperGraph.weighted);
 			// clustering loop
 			System.out.println("Start Directed Hypergraph Spectral Clustering algorithm ...");
 			while (!hgCopy.edges.isEmpty()){
@@ -539,22 +539,7 @@ public class PFClustering {
 	}
 	
 	/**
-	 * Convert clustering to a hypergraph
-	 * @return
-	 */
-	public HyperGraph toHyperGraph(){
-		HashSet<Edge> edges = new HashSet<Edge>();
-		for (Cluster clust : this.clusters){
-			Edge edge = new Edge(clust.vertices);
-			edges.add(edge);
-		}		
-		HyperGraph hg = new HyperGraph(edges, true);
-		System.out.println("Converted clustering to hypergraph with " + hg.vertices.size() + " vertices and " + hg.edges.size() + " egdes.");
-		return hg;
-	}
-	
-	/**
-	 * Write clusters to file
+	 * Write clusters to file (nodes)
 	 * @param dir
 	 * @param file
 	 */
@@ -564,7 +549,7 @@ public class PFClustering {
 			PrintWriter pw = new PrintWriter(f);
 			int ctr = 0;
 			for (Cluster cluster : this.clusters) {
-				if (this.hyperGraph.undirected)
+				if (!this.hyperGraph.directed)
 					for (String node : cluster.vertices){
 						String s = String.format("%s\t%d", node, ctr); 
 						pw.println(s);
@@ -588,7 +573,7 @@ public class PFClustering {
 	}
 	
 	/**
-	 * Write clusters to file
+	 * Write clusters to file (edges)
 	 * @param dir
 	 * @param file
 	 */
@@ -598,28 +583,14 @@ public class PFClustering {
 			PrintWriter pw = new PrintWriter(f);
 			int ctr = 0;
 			for (Cluster cluster : this.clusters) {
-				if (this.hyperGraph.undirected){
+				if (!this.hyperGraph.directed){
 					for (Edge edge : cluster.edges){
-						String ss = "";
-						for (int k=0; k<edge.orderedVertices.size(); k++){
-							ss += edge.orderedVertices.get(k) + "\t";
-						}
-						ss.trim();
-						String s = String.format("%d\t%s", ctr, ss); 
+						String s = String.format("%d\t%s", ctr, edge.toString(this.hyperGraph.weighted)); 
 						pw.println(s);
 					}
 				} else {
 					for (Edge edge : cluster.edges){
-						String ss = "";
-						for (String node : edge.sourceVertices){
-							ss += node + "\t";
-						}
-						ss += "|" + "\t";
-						for (String node : edge.targetVertices){
-							ss += node + "\t";
-						}
-						ss.trim();
-						String s = String.format("%d\t%s", ctr, ss); 
+						String s = String.format("%d\t%s", ctr, edge.toStringDirected(this.hyperGraph.weighted));
 						pw.println(s);
 					}
 				}

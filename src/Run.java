@@ -18,11 +18,12 @@ public class Run {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String file = "/Users/tom/Research/HypergraphClust/yeast_paths_tfs_del/tfdel_paths_dir/yeast_paths_tfdel_dir.txt";
-		boolean undirected = false; //true;
-		HyperGraph hg = new HyperGraph(file, undirected);
-		PFClustering clust = new PFClustering(hg, 1.0, 1.0);
-//		PFClustering clust = new PFClustering(hg, 1.0);
+		String file = "/Users/tom/Research/HypergraphClust/yeast_paths_tfs_del/tfdel_paths/yeast_paths_tfdel.txt";
+		boolean directed = false; //true;
+		boolean weighted = false;
+		HyperGraph hg = new HyperGraph(file, directed, weighted);
+//		PFClustering clust = new PFClustering(hg, 1.0, 1.0);
+		PFClustering clust = new PFClustering(hg, 1.0);
 //		clust.pfClustering();
 		clust.recursivePfClustering();
 		clust.postProcessing();
