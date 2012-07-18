@@ -1,12 +1,10 @@
 /*
  * SCHype - Java package for spectral clustering in hypergraphs
  * 
- * Copyright (C) 2011-2012 Tom Michoel, Freiburg Institute for Advanced Studies
+ * Copyright (C) 2012 Tom Michoel (The Roslin Institute, University of Edinburgh)
  * 
  */
  
-import java.io.IOException;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Options;
