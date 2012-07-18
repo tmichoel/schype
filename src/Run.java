@@ -28,8 +28,8 @@ public class Run {
 		clust.recursivePfClustering();
 		clust.postProcessing();
 //		clust.writeScores(dir, "Cross_tissue_lemone_hypergraph_scores.txt");
-		clust.writeClusters("path_clusters.txt");
-		clust.writeClusterEdges("path_clusters_edges.txt");
+		clust.writeClusters("tmp.txt");
+		clust.writeClusterEdges("tmp_edges.txt");
 //		for (int k=0; k<clust.clusters.size(); k++){
 //			writeVector(clust.clusters.get(k).perronVector, dir, "geom_graph_100_tri_vector_"+k+".txt");
 //		}
