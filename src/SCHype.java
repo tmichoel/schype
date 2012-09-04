@@ -70,8 +70,10 @@ public class SCHype {
 			if (cmd.hasOption("weighted"))
 				weighted = Boolean.parseBoolean(cmd.getOptionValue("weighted"));
 			
-			if (cmd.hasOption("p"))
+			if (cmd.hasOption("p")){
 				p = Double.parseDouble(cmd.getOptionValue("p"));
+				q = p;
+			}
 			
 			if (cmd.hasOption("q"))
 				q = Double.parseDouble(cmd.getOptionValue("q"));
