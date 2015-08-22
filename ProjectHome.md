@@ -1,0 +1,1 @@
+SCHype is a Java command line tool for spectral clustering in hypergraphs, which implements the algorithm introduced in the paper <a href='http://arxiv.org/abs/1205.3630'>Alignment and integration of complex networks by hypergraph-based spectral clustering</a>. Contact <a href='http://www.roslin.ed.ac.uk/tom-michoel/'>Tom Michoel</a> for further information.
